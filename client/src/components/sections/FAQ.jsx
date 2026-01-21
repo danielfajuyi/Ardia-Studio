@@ -28,8 +28,8 @@ const AccordionItem = ({ item, isOpen, onClick }) => {
         className="w-full py-6 flex items-center justify-between text-left focus:outline-none"
         onClick={onClick}
       >
-        <span className="text-lg font-medium hover:text-purple-400 transition-colors">{item.question}</span>
-        {isOpen ? <Minus className="text-purple-400" /> : <Plus className="text-gray-500" />}
+        <span className="text-lg font-medium hover:text-primary transition-colors">{item.question}</span>
+        {isOpen ? <Minus className="text-primary" /> : <Plus className="text-gray-500" />}
       </button>
       <AnimatePresence>
         {isOpen && (

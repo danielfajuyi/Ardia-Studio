@@ -1,20 +1,47 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
 
+/* Apple-style Smooth Scrolling & Base Styles */
+:root {
+    font-family: 'SF Pro Display', 'SF Pro Icons', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+    color-scheme: dark;
+    background-color: #0a0a0a;
+    color: #ffffff;
+}
+
+html.lenis {
+    height: auto;
+}
+
+.lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+    overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+    pointer-events: none;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-    --background: 10 10 10;
-    --foreground: 255 255 255;
-}
-
 body {
-    background-color: #050505;
+    background-color: #0a0a0a;
     color: #ffffff;
-    font-family: 'Outfit', sans-serif;
-    overflow-x: hidden;
+    font-family: 'SF Pro Display', sans-serif;
+    margin: 0;
+    padding: 0;
+    width: 100%;
 }
 
 @layer utilities {

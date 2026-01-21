@@ -32,10 +32,10 @@ const PricingCard = ({ plan, index }) => {
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1, duration: 0.5 }}
       viewport={{ once: true }}
-      className={`relative p-8 rounded-3xl border ${plan.popular ? 'border-purple-500 bg-white/5' : 'border-white/10 bg-black/40'} flex flex-col`}
+      className={`relative p-8 rounded-3xl border ${plan.popular ? 'border-primary bg-white/5' : 'border-white/10 bg-black/40'} flex flex-col`}
     >
       {plan.popular && (
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-purple-500 to-pink-500 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-primary text-black text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest">
           Most Popular
         </div>
       )}
@@ -46,13 +46,13 @@ const PricingCard = ({ plan, index }) => {
       <ul className="mb-8 space-y-4 flex-1">
         {plan.features.map((feature, i) => (
           <li key={i} className="flex items-center text-sm text-gray-300">
-            <Check className="w-4 h-4 text-green-400 mr-2" />
+            <Check className="w-4 h-4 text-primary mr-2" />
             {feature}
           </li>
         ))}
       </ul>
       
-      <Button variant={plan.variant} className="w-full text-center justify-center">
+      <Button variant={plan.variant === 'glow' ? 'primary' : 'secondary'} className="w-full text-center justify-center">
         Choose {plan.name}
       </Button>
     </motion.div>
@@ -63,7 +63,7 @@ const Pricing = () => {
   return (
     <section className="py-20 bg-background relative overflow-hidden">
       {/* Background Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-purple-900/20 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/10 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center mb-16">

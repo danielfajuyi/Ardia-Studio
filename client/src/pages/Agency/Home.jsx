@@ -1,6 +1,8 @@
 import React from 'react';
 import Hero from '../../components/ui/Hero';
+import FeaturedVideo from '../../components/sections/FeaturedVideo';
 import Services from '../../components/sections/Services';
+import ArdiaAcademy from '../../components/sections/ArdiaAcademy';
 import Works from '../../components/sections/Works';
 import Pricing from '../../components/sections/Pricing';
 import FAQ from '../../components/sections/FAQ';
@@ -8,14 +10,16 @@ import Footer from '../../components/ui/Footer';
 
 const Home = () => {
   return (
-    <div className="w-full">
+    <main className="bg-background min-h-screen">
       <Hero />
+      <FeaturedVideo />
       <Services />
+      <ArdiaAcademy />
       <Works />
       <Pricing />
       <FAQ />
       <Footer />
-    </div>
+    </main>
   );
 };
 
