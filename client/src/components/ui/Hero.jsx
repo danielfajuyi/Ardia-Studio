@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 import Button from "./Button";
 import BlurText from "./BlurText";
 import ShinyText from "./ShinyText";
+import ShinyText2 from "./ShinyText2";
 
 const Hero = () => {
   const containerRef = useRef(null);
@@ -56,7 +57,7 @@ const Hero = () => {
           transition={{ duration: 1, ease: "easeOut" }}
           className="mb-6"
         >
-          <ShinyText
+          {/* <ShinyText
             text="  The Future of Visuals"
             speed={2}
             delay={0}
@@ -67,13 +68,25 @@ const Hero = () => {
             yoyo={false}
             pauseOnHover={false}
             disabled={false}
-          />
+          /> */}
+          <p className=" #b5b5b5font-medium tracking-[0.2em] text-sm md:text-base uppercase mb-4">
+            The Future of Visuals
+          </p>
         </motion.div>
 
         <div className="mb-20 mt-20 items-center justify-center flex flex-col ">
-          <p className="text-9xl md:text-8xl text-center font-semibold tracking-tight text-white mb-2">
-            ARDIA STUDIO
-          </p>
+          <ShinyText2
+            text="ARDIA STUDIO"
+            speed={4}
+            delay={0}
+            color="rgba(255, 255, 255, 0)"
+            shineColor="rgba(255, 255, 255, 1)"
+            spread={120}
+            direction="left"
+            strokeWidth="1px"
+            strokeColor="rgba(255, 255, 255, 0.6)"
+            className="text-9xl md:text-8xl text-center font-bold tracking-tighter mb-2 text-transparent"
+          />
         </div>
 
         <motion.div
