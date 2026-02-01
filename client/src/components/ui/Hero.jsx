@@ -1,14 +1,29 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Button from "./Button";
 import BlurText from "./BlurText";
 import ShinyText from "./ShinyText";
 import ShinyText2 from "./ShinyText2";
+import axios from "axios";
 
 const Hero = () => {
   const containerRef = useRef(null);
   const { scrollY } = useScroll();
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+  const [content, setContent] = useState({});
+  const SERVER_URL = import.meta.env.VITE_SERVER_URL || "http://localhost:5000";
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      try {
+        const { data } = await axios.get(`${SERVER_URL}/api/cms`);
+        setContent(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchContent();
+  }, []);
 
   const videos = [
     "/asset/asakeOge.mp4",
@@ -70,13 +85,13 @@ const Hero = () => {
             disabled={false}
           /> */}
           <p className=" #b5b5b5font-medium tracking-[0.2em] text-sm md:text-base uppercase mb-4">
-            The Future of Visuals
+            {content.hero?.subtitle || "The Future of Visuals"}
           </p>
         </motion.div>
 
         <div className="mb-20 mt-20 items-center justify-center flex flex-col ">
           <ShinyText2
-            text="ARDIA STUDIO"
+            text={content.hero?.title || "ARDIA STUDIO"}
             speed={4}
             delay={0}
             color="rgba(255, 255, 255, 0)"
@@ -96,7 +111,7 @@ const Hero = () => {
           className="flex flex-col md:flex-row items-center justify-center gap-6"
         >
           <Button variant="primary" className="min-w-[160px]">
-            Watch Showreel
+            {content.hero?.cta_text || "Watch Showreel"}
           </Button>
           <Button variant="secondary" className="min-w-[160px]">
             Explore Academy
