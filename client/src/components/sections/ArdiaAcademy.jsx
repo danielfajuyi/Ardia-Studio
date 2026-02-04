@@ -1,9 +1,21 @@
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import Button from "../ui/Button";
+import { useRef } from "react";
 
 const ArdiaAcademy = () => {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+
+  const y = useTransform(scrollYProgress, [0, 1], [0, -100]);
+
   return (
-    <section className="py-24 bg-background relative border-t border-white/5">
+    <section
+      ref={ref}
+      className="py-24 bg-background relative border-t border-white/5"
+    >
       <div className="container mx-auto px-6">
         <div className="rounded-[2.5rem] bg-[#111] overflow-hidden relative">
           <div className="grid grid-cols-1 lg:grid-cols-2">
@@ -59,7 +71,10 @@ const ArdiaAcademy = () => {
 
             {/* Right Image/Graphic */}
             <div className="relative h-[400px] lg:h-auto overflow-hidden">
-              <div className="absolute inset-0 bg-[url('https://files.selar.co/product-images/2025/products/nwasoribe/3-week-ai-video-content-m-selar.com-69134015d43a0.jpg')] bg-cover bg-center" />
+              <motion.div
+                style={{ y }}
+                className="absolute inset-0 bg-[url('https://files.selar.co/product-images/2025/products/nwasoribe/3-week-ai-video-content-m-selar.com-69134015d43a0.jpg')] bg-cover bg-center h-[120%]"
+              />
             </div>
           </div>
         </div>

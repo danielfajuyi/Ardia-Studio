@@ -226,7 +226,12 @@ const FeaturedVideo = () => {
     <section className="py-24 bg-background overflow-hidden select-none">
       <div className="container mx-auto px-6 mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
         <div className="flex flex-col gap-2">
-          <p className="text-xl text-whiten "> Featured Work: </p>
+          <h4
+            id="featured-text"
+            className="text-primary font-bold tracking-widest uppercase mb-4 text-sm"
+          >
+            Featured Work
+          </h4>
           <h3 className="text-4xl py-1  bg-gradient-to-b from-[#cfcece] to-[#ffffff] bg-clip-text text-transparent  md:text-6xl font-semibold leading-normal tracking-tight">
             Imagination in Motion
           </h3>

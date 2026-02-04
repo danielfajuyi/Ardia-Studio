@@ -5,6 +5,7 @@ import BlurText from "./BlurText";
 import ShinyText from "./ShinyText";
 import ShinyText2 from "./ShinyText2";
 import axios from "axios";
+import ScrollLine from "./Scroll-Line";
 
 const Hero = () => {
   const containerRef = useRef(null);
@@ -126,15 +127,14 @@ const Hero = () => {
         transition={{ delay: 2, duration: 1 }}
         className="absolute bottom-32 left-0 w-full flex justify-center z-30"
       >
-        <div className="flex flex-col items-center gap-2">
+        <div
+          id="hero-scroll-indicator"
+          className="flex flex-col items-center gap-2"
+        >
           <span className="text-xs text-gray-500 tracking-widest uppercase">
             Scroll to Explore
           </span>
-          <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="w-[1px] h-12 bg-gradient-to-b from-primary to-transparent"
-          />
+          <ScrollLine />
         </div>
       </motion.div>
     </section>

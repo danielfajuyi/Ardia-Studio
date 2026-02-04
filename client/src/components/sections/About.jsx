@@ -43,7 +43,7 @@ const About = () => {
   });
 
   // Dynamic gradient background based on mouse
-  const background = useMotionTemplate`radial-gradient(circle at ${useTransform(mouseX, [-1, 1], ["0%", "100%"])} ${useTransform(mouseY, [-1, 1], ["0%", "100%"])}, rgba(59, 130, 246, 0.15), transparent 50%)`;
+  const background = useMotionTemplate`radial-gradient(circle at ${useTransform(mouseX, [-1, 1], ["0%", "100%"])} ${useTransform(mouseY, [-1, 1], ["0%", "100%"])}, rgba(235, 235, 235, 0.1), transparent 50%)`;
 
   return (
     <section
@@ -82,7 +82,10 @@ const About = () => {
               transition={{ duration: 0.8 }}
               style={{ transformStyle: "preserve-3d" }}
             >
-              <h4 className="text-blue-500 font-bold tracking-widest uppercase mb-4 text-sm">
+              <h4
+                id="origin-text"
+                className="text-primary font-bold tracking-widest uppercase mb-4 text-sm"
+              >
                 Our Origin
               </h4>
               <h2 className="text-5xl md:text-7xl font-bold text-white leading-tight mb-6">
@@ -126,7 +129,7 @@ const About = () => {
             {/* Floating Images / Cards */}
             <motion.div
               style={{ y: y1, rotate: -12, z: 20 }}
-              className="absolute w-48 h-64 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl blur-2xl opacity-40 top-10 left-10"
+              className="absolute w-48 h-64 bg-gradient-to-r  from-gray-800 to-gray-400 rounded-xl blur-2xl opacity-40 top-10 left-10"
             />
 
             <motion.div

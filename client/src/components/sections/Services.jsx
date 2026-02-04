@@ -1,5 +1,55 @@
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import { Video, Zap, Globe, Cpu, Layers, Lock } from "lucide-react";
+import { useRef } from "react";
+
+const TiltCard = ({ children, className }) => {
+  const ref = useRef(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const mouseXSpring = useSpring(x);
+  const mouseYSpring = useSpring(y);
+
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["15deg", "-15deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-15deg", "15deg"]);
+
+  const handleMouseMove = (e) => {
+    const rect = ref.current.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    const xPct = mouseX / width - 0.5;
+    const yPct = mouseY / height - 0.5;
+    x.set(xPct);
+    y.set(yPct);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        rotateY,
+        rotateX,
+        transformStyle: "preserve-3d",
+      }}
+      className={className}
+    >
+      <div
+        style={{ transform: "translateZ(50px)", transformStyle: "preserve-3d" }}
+      >
+        {children}
+      </div>
+    </motion.div>
+  );
+};
 
 const services = [
   {
@@ -33,7 +83,10 @@ const services = [
 
 const Services = () => {
   return (
-    <section className="py-24 bg-background relative overflow-hidden">
+    <section
+      className="py-24 bg-background relative overflow-hidden perspective-1000"
+      style={{ perspective: "1000px" }}
+    >
       <div className="container mx-auto px-6">
         <div className="mb-16 max-w-2xl">
           <h2 className="text-4xl md:text-5xl font-semibold tracking-tight text-white mb-4">
@@ -53,16 +106,11 @@ const Services = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1, duration: 0.5 }}
               viewport={{ once: true }}
-              whileHover={{ scale: 1.02 }}
-              className={`${service.colSpan} p-8 rounded-[2rem] bg-secondary border border-white/5 hover:border-primary/30 transition-all duration-300 relative group overflow-hidden`}
+              className={`${service.colSpan} p-8 rounded-[2rem] bg-secondary border border-white/5 relative overflow-hidden`}
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
               <div className="relative z-10 flex flex-col h-full justify-between min-h-[200px]">
-                <div className="bg-background/50 w-12 h-12 rounded-full flex items-center justify-center border border-white/10 mb-6 group-hover:bg-primary transition-colors duration-300">
-                  <div className="group-hover:text-black transition-colors duration-300">
-                    {service.icon}
-                  </div>
+                <div className="bg-background/50 w-12 h-12 rounded-full flex items-center justify-center border border-white/10 mb-6">
+                  <div className="text-white">{service.icon}</div>
                 </div>
 
                 <div>
