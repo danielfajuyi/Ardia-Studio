@@ -39,12 +39,15 @@ const ArdiaAcademy = () => {
               </motion.p>
 
               <div className="flex flex-col sm:flex-row items-center gap-6">
-                <Button
-                  variant="primary"
-                  className="w-full sm:w-auto text-lg px-8"
-                >
-                  Register Now
-                </Button>
+                <a href="https://selar.co/76aib665o4">
+                  <Button
+                    variant="primary"
+                    className="w-full sm:w-auto text-lg px-8"
+                  >
+                    Register Now
+                  </Button>
+                </a>
+
                 <div className="text-left">
                   <div className="text-2xl font-bold text-white">₦30,000</div>
                   <div className="text-sm text-primary uppercase tracking-wider font-bold">

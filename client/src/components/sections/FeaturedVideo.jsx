@@ -225,9 +225,12 @@ const FeaturedVideo = () => {
   return (
     <section className="py-24 bg-background overflow-hidden select-none">
       <div className="container mx-auto px-6 mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-        <h2 className="text-4xl py-1  bg-gradient-to-b from-[#cfcece] to-[#ffffff] bg-clip-text text-transparent  md:text-6xl font-semibold leading-normal tracking-tight">
-          Get the highlights.
-        </h2>
+        <div className="flex flex-col gap-2">
+          <p className="text-xl text-whiten "> Featured Work: </p>
+          <h3 className="text-4xl py-1  bg-gradient-to-b from-[#cfcece] to-[#ffffff] bg-clip-text text-transparent  md:text-6xl font-semibold leading-normal tracking-tight">
+            Imagination in Motion
+          </h3>
+        </div>
 
         {/* Custom Pagination */}
         <div className="hidden md:flex items-center gap-4">
