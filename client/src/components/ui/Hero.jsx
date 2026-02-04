@@ -134,7 +134,7 @@ const Hero = () => {
           <span className="text-xs text-gray-500 tracking-widest uppercase">
             Scroll to Explore
           </span>
-          <ScrollLine />
+          {/* <ScrollLine /> */}
         </div>
       </motion.div>
     </section>

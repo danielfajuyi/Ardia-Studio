@@ -6,6 +6,11 @@ const ScrollDripLine = () => {
     hero: { x: 0, y: 0 },
     about: { x: 0, y: 0 },
     featured: { x: 0, y: 0 },
+    value: { x: 0, y: 0 },
+    offer: { x: 0, y: 0 },
+    process: { x: 0, y: 0 },
+    trust: { x: 0, y: 0 },
+    close: { x: 0, y: 0 },
   });
   const [isReady, setIsReady] = useState(false);
 
@@ -21,31 +26,45 @@ const ScrollDripLine = () => {
       const heroEl = document.getElementById("hero-scroll-indicator");
       const aboutEl = document.getElementById("origin-text");
       const featuredEl = document.getElementById("featured-text");
+      const valueEl = document.getElementById("value-text");
+      const offerEl = document.getElementById("offer-text");
+      const processEl = document.getElementById("process-text");
+      const trustEl = document.getElementById("trust-text");
+      const closeEl = document.getElementById("close-text");
 
-      if (heroEl && aboutEl && featuredEl) {
+      if (
+        heroEl &&
+        aboutEl &&
+        featuredEl &&
+        valueEl &&
+        offerEl &&
+        processEl &&
+        trustEl &&
+        closeEl
+      ) {
+        const getPos = (el) => {
+          const rect = el.getBoundingClientRect();
+          return {
+            x: rect.left + rect.width / 2,
+            y: rect.top + window.scrollY,
+          };
+        };
+
         const heroRect = heroEl.getBoundingClientRect();
-        const aboutRect = aboutEl.getBoundingClientRect();
-        const featuredRect = featuredEl.getBoundingClientRect();
-
-        // Calculate absolute positions relative to document
-        // Hero: Center of the indicator
-        const heroX = heroRect.left + heroRect.width / 2;
-        const heroY = heroRect.top + window.scrollY + heroRect.height / 2 + 20; // Start slightly below text
-
-        // About: Align with Left of "Our Origin" text? Content is usually left-aligned.
-        // Or roughly center? The user said "stops at the Our Origin text".
-        // Let's target the center-left of the text element.
-        const aboutX = aboutRect.left + aboutRect.width / 2;
-        const aboutY = aboutRect.top + window.scrollY; // Top of text
-
-        // Featured: Center of "Featured Work" text
-        const featuredX = featuredRect.left + featuredRect.width / 2;
-        const featuredY = featuredRect.top + window.scrollY; // Top of text
+        const heroPos = {
+          x: heroRect.left + heroRect.width / 2,
+          y: heroRect.top + window.scrollY + heroRect.height / 2 + 20,
+        };
 
         setPositions({
-          hero: { x: heroX, y: heroY },
-          about: { x: aboutX, y: aboutY },
-          featured: { x: featuredX, y: featuredY },
+          hero: heroPos,
+          about: getPos(aboutEl),
+          featured: getPos(featuredEl),
+          value: getPos(valueEl),
+          offer: getPos(offerEl),
+          process: getPos(processEl),
+          trust: getPos(trustEl),
+          close: getPos(closeEl),
         });
         setIsReady(true);
       }
@@ -55,6 +74,7 @@ const ScrollDripLine = () => {
     // Multiple timeouts to catch layout shifts
     setTimeout(updatePositions, 500);
     setTimeout(updatePositions, 1500);
+    setTimeout(updatePositions, 3000);
 
     return () => window.removeEventListener("resize", updatePositions);
   }, []);
@@ -73,25 +93,28 @@ const ScrollDripLine = () => {
   // Stage 1: About (When About is centered in view)
   // Stage 2: Featured (When Featured is centered in view)
 
-  const startY = positions.hero.y;
-  const midY = positions.about.y;
-  const endY = positions.featured.y;
+  // Triggers: When the target element is somewhat centered or slightly above center
+  const getTrigger = (targetY) => targetY - viewportHeight * 0.5;
 
-  // Trigger points (scroll position when the target is roughly centered)
-  const stage1Trigger = midY - viewportHeight * 0.6;
-  const stage2Trigger = endY - viewportHeight * 0.6;
+  const stops = [
+    { pos: positions.hero, scroll: 0 },
+    { pos: positions.about, scroll: getTrigger(positions.about.y) },
+    { pos: positions.featured, scroll: getTrigger(positions.featured.y) },
+    { pos: positions.value, scroll: getTrigger(positions.value.y) },
+    { pos: positions.offer, scroll: getTrigger(positions.offer.y) },
+    { pos: positions.process, scroll: getTrigger(positions.process.y) },
+    { pos: positions.trust, scroll: getTrigger(positions.trust.y) },
+    { pos: positions.close, scroll: getTrigger(positions.close.y) },
+  ];
 
-  const isValid = isReady && stage1Trigger > 0 && stage2Trigger > stage1Trigger;
+  // Validate: Ascending order
+  const isValid =
+    isReady &&
+    stops.every((stop, i) => i === 0 || stop.scroll > stops[i - 1].scroll);
 
-  const inputRange = isValid ? [0, stage1Trigger, stage2Trigger] : [0, 1, 2];
-
-  const xRange = isValid
-    ? [positions.hero.x, positions.about.x, positions.featured.x]
-    : [0, 0, 0];
-
-  const yRange = isValid
-    ? [positions.hero.y, positions.about.y, positions.featured.y]
-    : [0, 0, 0];
+  const inputRange = isValid ? stops.map((s) => s.scroll) : [0, 1];
+  const xRange = isValid ? stops.map((s) => s.pos.x) : [0, 0];
+  const yRange = isValid ? stops.map((s) => s.pos.y) : [0, 0];
 
   const x = useTransform(scrollY, inputRange, xRange);
   const y = useTransform(scrollY, inputRange, yRange);
@@ -109,7 +132,7 @@ const ScrollDripLine = () => {
   return (
     <div
       className="absolute inset-0 pointer-events-none z-[9999] overflow-hidden"
-      style={{ height: Math.max(endY + 1000, 5000) }}
+      style={{ height: Math.max(positions.close.y + 1000, 5000) }}
     >
       <motion.div
         style={{
