@@ -11,8 +11,8 @@ const Step = ({ number, title, description, index }) => (
     {/* Line connector */}
     <div className="absolute left-[19px] top-10 bottom-0 w-[2px] bg-white/10 last:hidden" />
 
-    <div className="relative shrink-0 w-10 h-10 rounded-full border border-blue-500/50 flex items-center justify-center bg-black z-10">
-      <span className="text-sm font-bold text-blue-500">{number}</span>
+    <div className="relative shrink-0 w-10 h-10 rounded-full border border-primary/50 flex items-center justify-center bg-black z-10">
+      <span className="text-sm font-bold text-primary">{number}</span>
     </div>
 
     <div>

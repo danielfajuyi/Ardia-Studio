@@ -22,6 +22,7 @@ const ArdiaAcademy = () => {
             {/* Left Content */}
             <div className="p-12 md:p-16 flex flex-col justify-center relative z-10">
               <motion.span
+                id="academy-text"
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 className="text-primary font-bold tracking-widest uppercase text-sm mb-4"

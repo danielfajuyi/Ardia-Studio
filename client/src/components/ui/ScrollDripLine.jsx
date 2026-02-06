@@ -2,149 +2,157 @@ import { useEffect, useState } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 
 const ScrollDripLine = () => {
-  const [positions, setPositions] = useState({
-    hero: { x: 0, y: 0 },
-    about: { x: 0, y: 0 },
-    featured: { x: 0, y: 0 },
-    value: { x: 0, y: 0 },
-    offer: { x: 0, y: 0 },
-    process: { x: 0, y: 0 },
-    trust: { x: 0, y: 0 },
-    close: { x: 0, y: 0 },
-  });
+  const [stops, setStops] = useState([]);
   const [isReady, setIsReady] = useState(false);
+  const [lineHeight, setLineHeight] = useState(0);
 
   const { scrollY } = useScroll();
 
   useEffect(() => {
-    const updatePositions = () => {
-      // Elements to track
-      // Hero Line: We can track the 'Scroll to Explore' text wrapper or the line itself if it has an ID
-      // About Header: "OUR ORIGIN" (#origin-text)
-      // Featured Header: "FEATURED WORK" (#featured-text)
+    // List of all potential anchor points in order
+    const targetIds = [
+      "hero-scroll-indicator", // Start
+      "origin-text", // About
+      "featured-text", // Featured Video
+      "value-text", // Why Choose Us
+      "offer-text", // Services
+      "process-text", // Process
+      "trust-text", // Testimonials
+      "academy-text", // Academy
+      "works-text", // Works
+      "pricing-text", // Pricing
+      "faq-text", // FAQ
+      "close-text", // Final CTA (Optional close)
+    ];
 
+    const calculatePositions = () => {
+      const foundStops = [];
+      let maxY = 0;
+
+      // Helper to calculate absolute position
+      const getCoords = (el) => {
+        const rect = el.getBoundingClientRect();
+        return {
+          x: rect.left + rect.width / 2,
+          y: rect.top + window.scrollY,
+        };
+      };
+
+      // 1. Always attempt to find Hero first as the starting point.
       const heroEl = document.getElementById("hero-scroll-indicator");
-      const aboutEl = document.getElementById("origin-text");
-      const featuredEl = document.getElementById("featured-text");
-      const valueEl = document.getElementById("value-text");
-      const offerEl = document.getElementById("offer-text");
-      const processEl = document.getElementById("process-text");
-      const trustEl = document.getElementById("trust-text");
-      const closeEl = document.getElementById("close-text");
 
-      if (
-        heroEl &&
-        aboutEl &&
-        featuredEl &&
-        valueEl &&
-        offerEl &&
-        processEl &&
-        trustEl &&
-        closeEl
-      ) {
-        const getPos = (el) => {
-          const rect = el.getBoundingClientRect();
-          return {
-            x: rect.left + rect.width / 2,
-            y: rect.top + window.scrollY,
-          };
-        };
+      // If hero is missing, we can't really start, but let's try to proceed if we find other things?
+      // Nah, Hero is critical for the start.
+      if (!heroEl) return false;
 
-        const heroRect = heroEl.getBoundingClientRect();
-        const heroPos = {
-          x: heroRect.left + heroRect.width / 2,
-          y: heroRect.top + window.scrollY + heroRect.height / 2 + 20,
-        };
+      const heroCoords = getCoords(heroEl);
+      // Adjust Hero Y to be strictly below the text container
+      const heroRect = heroEl.getBoundingClientRect();
+      heroCoords.y += heroRect.height + 10;
 
-        setPositions({
-          hero: heroPos,
-          about: getPos(aboutEl),
-          featured: getPos(featuredEl),
-          value: getPos(valueEl),
-          offer: getPos(offerEl),
-          process: getPos(processEl),
-          trust: getPos(trustEl),
-          close: getPos(closeEl),
-        });
+      foundStops.push({
+        id: "hero",
+        pos: heroCoords,
+        scroll: 0, // Start point is always scroll 0
+      });
+      maxY = heroCoords.y;
+
+      // 2. Iterate through the rest
+      const viewportHeight = window.innerHeight;
+
+      targetIds.slice(1).forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) {
+          const coords = getCoords(el);
+
+          // Trigger animation when this element reaches center of viewport
+          const trigger = Math.max(0, coords.y - viewportHeight * 0.5);
+
+          foundStops.push({
+            id: id,
+            pos: coords,
+            scroll: trigger,
+          });
+
+          if (coords.y > maxY) maxY = coords.y;
+        }
+      });
+
+      // 3. Sort by 'scroll' trigger to ensure monotonic increase for Framer Motion
+      // (Though physically they should naturally be in order if the DOM order matches)
+      foundStops.sort((a, b) => a.scroll - b.scroll);
+
+      // We need at least 2 points to start rendering lines
+      if (foundStops.length >= 2) {
+        setStops(foundStops);
+        setLineHeight(maxY + 1000); // Add buffer
         setIsReady(true);
+        return true;
       }
+
+      return false;
     };
 
-    window.addEventListener("resize", updatePositions);
-    // Multiple timeouts to catch layout shifts
-    setTimeout(updatePositions, 500);
-    setTimeout(updatePositions, 1500);
-    setTimeout(updatePositions, 3000);
+    // Polling Mechanism
+    // Check immediately
+    if (calculatePositions()) return;
 
-    return () => window.removeEventListener("resize", updatePositions);
+    // Retry every 500ms for 5 seconds
+    const interval = setInterval(() => {
+      if (calculatePositions()) {
+        clearInterval(interval);
+      }
+    }, 500);
+
+    const timeout = setTimeout(() => {
+      clearInterval(interval);
+      // If we still haven't found enough points, just give up silently
+      // or keep whatever partial state we might have (but render requires 2)
+    }, 5000);
+
+    // Re-calculate on resize
+    window.addEventListener("resize", calculatePositions);
+
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timeout);
+      window.removeEventListener("resize", calculatePositions);
+    };
   }, []);
 
-  const viewportHeight =
-    typeof window !== "undefined" ? window.innerHeight : 1000;
+  // -- Render Logic --
 
-  // Logic:
-  // 0 Scroll -> Line is at Hero.
-  // Scroll Down -> Line elongates? Or moves? "Drips down... stops at...".
-  // "Stops at" implies motion. "Moves back and forth".
-  // So it's a projectile moving from A to B to C.
+  // Ensure arrays are valid for useTransform
+  const valid = isReady && stops.length >= 2;
 
-  // Transition Points
-  // Start: Hero
-  // Stage 1: About (When About is centered in view)
-  // Stage 2: Featured (When Featured is centered in view)
-
-  // Triggers: When the target element is somewhat centered or slightly above center
-  const getTrigger = (targetY) => targetY - viewportHeight * 0.5;
-
-  const stops = [
-    { pos: positions.hero, scroll: 0 },
-    { pos: positions.about, scroll: getTrigger(positions.about.y) },
-    { pos: positions.featured, scroll: getTrigger(positions.featured.y) },
-    { pos: positions.value, scroll: getTrigger(positions.value.y) },
-    { pos: positions.offer, scroll: getTrigger(positions.offer.y) },
-    { pos: positions.process, scroll: getTrigger(positions.process.y) },
-    { pos: positions.trust, scroll: getTrigger(positions.trust.y) },
-    { pos: positions.close, scroll: getTrigger(positions.close.y) },
-  ];
-
-  // Validate: Ascending order
-  const isValid =
-    isReady &&
-    stops.every((stop, i) => i === 0 || stop.scroll > stops[i - 1].scroll);
-
-  const inputRange = isValid ? stops.map((s) => s.scroll) : [0, 1];
-  const xRange = isValid ? stops.map((s) => s.pos.x) : [0, 0];
-  const yRange = isValid ? stops.map((s) => s.pos.y) : [0, 0];
+  const inputRange = valid ? stops.map((s) => s.scroll) : [0, 1];
+  const xRange = valid ? stops.map((s) => s.pos.x) : [0, 0];
+  const yRange = valid ? stops.map((s) => s.pos.y) : [0, 0];
 
   const x = useTransform(scrollY, inputRange, xRange);
   const y = useTransform(scrollY, inputRange, yRange);
 
-  // Make the motion fluid/springy
-  const springX = useSpring(x, { stiffness: 40, damping: 20 });
-  const springY = useSpring(y, { stiffness: 40, damping: 20 });
+  // Slower, more fluid physics
+  const springX = useSpring(x, { stiffness: 35, damping: 30 });
+  const springY = useSpring(y, { stiffness: 35, damping: 30 });
 
-  // Visibility:
-  // Fade out before start? No, starts at Hero.
-  // Maybe scale X/Y to simulate dripping elongation?
-
-  if (!isValid) return null;
+  if (!valid) return null;
 
   return (
     <div
       className="absolute inset-0 pointer-events-none z-[9999] overflow-hidden"
-      style={{ height: Math.max(positions.close.y + 1000, 5000) }}
+      style={{ height: lineHeight }}
     >
       <motion.div
         style={{
           x: springX,
           y: springY,
-          translateX: "-50%",
+          translateX: "-50%", // Center the pulse on the coordinate
         }}
         className="absolute top-0 left-0"
       >
-        {/* The Visual Drip Line */}
         <motion.div
-          animate={{ height: [40, 60, 40] }} // Pulsing length
+          animate={{ height: [40, 60, 40] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
           className="w-[2px] bg-gradient-to-b from-primary to-transparent rounded-full shadow-[0_0_15px_rgba(59,130,246,0.6)]"
         />

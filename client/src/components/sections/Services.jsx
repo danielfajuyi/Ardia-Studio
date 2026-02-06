@@ -9,8 +9,8 @@ const ServiceItem = ({ icon: Icon, title, description, index }) => (
     viewport={{ once: true }}
     className="group relative border-t border-white/10 py-12 flex flex-col md:flex-row md:items-start gap-6 hover:bg-white/5 transition-colors px-6 rounded-xl"
   >
-    <div className="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center shrink-0 group-hover:bg-blue-600 transition-colors">
-      <Icon className="w-6 h-6 text-gray-400 group-hover:text-white transition-colors" />
+    <div className="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center shrink-0 group-hover:bg-primary/90 transition-all duration-500 ease-out group-hover:scale-110">
+      <Icon className="w-6 h-6 text-gray-400 group-hover:text-black transition-colors duration-500" />
     </div>
     <div>
       <h3 className="text-2xl font-bold text-white mb-2">{title}</h3>
