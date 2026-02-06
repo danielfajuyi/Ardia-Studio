@@ -21,16 +21,15 @@ const Home = () => {
       <Hero />
       <About />
       <FeaturedVideo />
+
       <WhyChooseUs />
       <Services />
       <OurProcess />
-      <Testimonials />
-      <FinalCTA />
-
       <ArdiaAcademy />
       <Works />
-
+      <Testimonials />
       <FAQ />
+      <FinalCTA />
       <Footer />
     </main>
   );

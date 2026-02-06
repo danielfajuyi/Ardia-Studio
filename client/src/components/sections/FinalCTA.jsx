@@ -32,7 +32,7 @@ const FinalCTA = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
-          <Button variant="glow" className="text-lg px-12 py-4">
+          <Button variant="secondary" className="text-lg px-12 py-4">
             Work With Us
           </Button>
         </motion.div>

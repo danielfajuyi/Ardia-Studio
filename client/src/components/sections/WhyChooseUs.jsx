@@ -55,7 +55,7 @@ const WhyChooseUs = () => {
             whileInView={{ opacity: 1, x: 0 }}
             className="text-primary font-bold tracking-widest uppercase mb-4 text-sm"
           >
-            The Value
+            Why Choose Us
           </motion.h4>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}

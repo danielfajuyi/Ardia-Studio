@@ -55,7 +55,7 @@ const OurProcess = () => {
             id="process-text"
             className="text-primary font-bold tracking-widest uppercase mb-4 text-sm"
           >
-            The How-To
+            Idea to Execution
           </h4>
           <h2 className="text-4xl md:text-6xl font-bold text-white mb-8">
             Our Process
