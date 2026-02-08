@@ -43,7 +43,7 @@ const Footer = () => {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="text-7xl md:text-9xl font-bold tracking-tighter text-white mb-8"
+                className="text-5xl md:text-7xl font-bold tracking-tighter text-white mb-8"
               >
                 ARDIA<span className="text-primary">.</span>
               </motion.h2>
