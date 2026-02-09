@@ -20,10 +20,8 @@ const Navbar = () => {
   const navLinks = [
     { name: "Agency", path: "/" },
     { name: "About", path: "/about" },
-    { name: "Contact", path: "/contact" },
     { name: "Academy", path: "/academy" },
-    { name: "Our Works", path: "/#works" }, // Updated to anchor to home
-    { name: "Pricing", path: "/pricing" },
+    { name: "Our Works", path: "/#works" },
   ];
 
   return (
@@ -63,9 +61,11 @@ const Navbar = () => {
           >
             Sign In
           </Link>
-          <Button variant="glow" className="px-8 py-2 text-sm">
-            Talk to Us
-          </Button>
+          <Link to="/contact">
+            <Button variant="primary" className="px-8 py-2 text-sm">
+              Talk to Us
+            </Button>
+          </Link>
         </div>
 
         {/* Mobile Toggle */}
@@ -104,9 +104,11 @@ const Navbar = () => {
               >
                 Sign In
               </Link>
-              <Button variant="glow" className="w-full">
-                Talk to Us
-              </Button>
+              <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)}>
+                <Button variant="glow" className="w-full">
+                  Talk to Us
+                </Button>
+              </Link>
             </div>
           </motion.div>
         )}

@@ -1,5 +1,11 @@
 import React, { useRef } from "react";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useSpring,
+  useMotionValue,
+} from "framer-motion";
 import Footer from "../../components/ui/Footer";
 import FinalCTA from "../../components/sections/FinalCTA";
 import { ArrowDown } from "lucide-react";
@@ -106,6 +112,54 @@ const ValueCard = ({ title, desc, icon, index }) => {
   );
 };
 
+const OriginImage = () => {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const mouseX = useSpring(x, { stiffness: 500, damping: 100 });
+  const mouseY = useSpring(y, { stiffness: 500, damping: 100 });
+
+  function handleMouseMove({ currentTarget, clientX, clientY }) {
+    const { left, top, width, height } = currentTarget.getBoundingClientRect();
+    x.set(clientX - left - width / 2);
+    y.set(clientY - top - height / 2);
+  }
+
+  const rotateX = useTransform(mouseY, [-300, 300], [5, -5]);
+  const rotateY = useTransform(mouseX, [-300, 300], [-5, 5]);
+
+  return (
+    <motion.div
+      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+      onMouseMove={handleMouseMove}
+      className="relative w-full aspect-[4/5] md:aspect-square rounded-3xl overflow-hidden bg-zinc-900 border border-white/10 group perspective-1000"
+    >
+      <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10 opacity-60" />
+
+      <motion.img
+        src="/asset/Picture1.jpgsDCAfcds.jpg"
+        alt="Ardai Studios Vision"
+        style={{ transform: "translateZ(20px) scale(1.1)" }}
+        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+      />
+
+      {/* Interactive Floating Elements */}
+      <motion.div
+        style={{ transform: "translateZ(60px)" }}
+        className="absolute bottom-10 left-10 z-20"
+      >
+        <div className="px-6 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl shadow-2xl">
+          <p className="text-white font-bold text-lg">Visionary</p>
+          <p className="text-xs text-secondary-300">Est. 2024</p>
+        </div>
+      </motion.div>
+
+      {/* Decorative Elements */}
+      <div className="absolute top-10 right-10 w-20 h-20 border border-white/20 rounded-full animate-spin-slow z-20 mix-blend-difference pointer-events-none" />
+    </motion.div>
+  );
+};
+
 const About = () => {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: containerRef });
@@ -169,52 +223,125 @@ const About = () => {
         </motion.div>
       </section>
 
-      {/* The Origin Story */}
+      {/* The Origin Story - Revamped */}
       <section className="py-32 relative">
         <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
-            <div className="space-y-12">
-              <AnimatedText
-                text="From Curiosity To Innovation."
-                className="text-5xl md:text-7xl font-bold leading-tight"
-              />
-              <div className="space-y-6 text-lg text-gray-400 leading-relaxed">
-                <p>
-                  Ardai Studios was born at the intersection of curiosity and a
-                  bold vision for the future. After seeing how artificial
-                  intelligence was reshaping global creativity, our founder,
-                  <span className="text-white font-medium"> Stella Soribe</span>
-                  , embarked on a journey of experimentation.
-                </p>
-                <p>
-                  What began as a personal quest to master AI video production
-                  quickly evolved into a movement. Together with co-founder{" "}
-                  <span className="text-white font-medium">Efe Edjowha</span>,
-                  Stella founded Ardai Studios—one of Africa’s first AI-driven
-                  production agencies.
-                </p>
-                <p>
-                  Today, we are a collective of futurists, artists, and
-                  engineers, united by a single mission: to build the future of
-                  visual storytelling.
-                </p>
-              </div>
+          <div className="flex flex-col lg:flex-row gap-20 items-start">
+            {/* Sticky Image Section */}
+            <div className="lg:w-1/2 lg:sticky lg:top-32 order-2 lg:order-1">
+              <OriginImage />
             </div>
 
-            <div className="relative aspect-[4/5] md:aspect-square">
-              <motion.div
-                style={{ y }}
-                className="w-full h-full rounded-3xl overflow-hidden bg-zinc-900 border border-white/10 relative"
-              >
-                <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent mix-blend-overlay z-10" />
-                {/* Placeholder for abstract or team collage */}
-                <div className="w-full h-full flex items-center justify-center text-zinc-800 text-9xl font-bold opacity-20">
-                  ARDAI
-                </div>
-                {/* Decorative Elements */}
-                <div className="absolute top-10 right-10 w-20 h-20 border border-white/20 rounded-full animate-spin-slow" />
-                <div className="absolute bottom-20 left-10 w-32 h-32 border border-primary/20 rounded-full animate-float" />
-              </motion.div>
+            {/* Scrollable Text Section */}
+            <div className="lg:w-1/2 space-y-12 order-1 lg:order-2">
+              <AnimatedText
+                text="About Ardai Studios"
+                className="text-5xl md:text-7xl font-bold leading-tight mb-8"
+              />
+
+              <div className="space-y-8 text-lg text-gray-300 leading-relaxed font-light">
+                <motion.p
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6 }}
+                  viewport={{ margin: "-100px" }}
+                >
+                  AI has always intrigued me. You know how they say curiosity
+                  kills the cat? Well, they never finish the sentence:{" "}
+                  <span className="text-white italic font-medium highlight-text">
+                    curiosity killed the cat, but satisfaction brought it back.
+                  </span>
+                  That’s exactly what happened to me.
+                </motion.p>
+                <motion.p
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: 0.1 }}
+                  viewport={{ margin: "-100px" }}
+                >
+                  I saw how Artificial Intelligence was quietly reshaping the
+                  world, how people in other parts of the globe were using it to
+                  create, innovate, and live differently. Having been connected
+                  with friends and creators in first-world countries, I saw
+                  firsthand just how far they had gone with AI, especially in
+                  video.
+                </motion.p>
+                <motion.p
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                  viewport={{ margin: "-100px" }}
+                >
+                  So I got curious. I started learning, experimenting, failing,
+                  and trying again. For months, I studied AI video production,
+                  not because it was trendy, but because I wanted to understand
+                  how technology could empower creativity. Then I started
+                  sharing my journey.
+                </motion.p>
+                <motion.p
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: 0.3 }}
+                  viewport={{ margin: "-100px" }}
+                >
+                  Surprisingly, people paid attention. They loved the results.
+                  And soon, they began asking for my services. What began as a
+                  personal experiment evolved into something much bigger, a
+                  vision. With the support of my co-founder,{" "}
+                  <span className="text-white font-medium">Efe Edjowha</span>,
+                  we decided to build something that could shape the future of
+                  storytelling on the continent.
+                </motion.p>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.8 }}
+                  viewport={{ margin: "-100px" }}
+                  className="p-8 border border-primary/20 bg-primary/5 rounded-2xl backdrop-blur-sm relative overflow-hidden"
+                >
+                  <div className="absolute top-0 left-0 w-1 h-full bg-primary" />
+                  <h4 className="text-white font-bold text-2xl mb-4">
+                    Our Goal Is Simple:
+                  </h4>
+                  <p className="italic text-gray-300 text-xl font-serif">
+                    "To make video production seamless, where imagination meets
+                    acceleration. Because creativity shouldn’t be slowed down by
+                    process. And innovation shouldn’t feel out of reach."
+                  </p>
+                </motion.div>
+                <motion.p
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: 0.4 }}
+                  viewport={{ margin: "-100px" }}
+                >
+                  At Ardai, we blend human imagination with artificial
+                  intelligence to help brands, creators, and storytellers move
+                  from concept to campaign, faster, smarter, better. So if
+                  you’ve got a vision worth sharing, let’s bring it to life.
+                </motion.p>
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ duration: 1, delay: 0.5 }}
+                  className="text-white font-medium mt-8 text-2xl"
+                >
+                  The future of storytelling starts here, at Ardai Studios.
+                </motion.p>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.6 }}
+                  className="mt-12 pt-8 border-t border-white/10"
+                >
+                  <p className="font-handwriting text-3xl rotate-[-2deg] text-primary">
+                    Stella Soribe
+                  </p>
+                  <p className="text-sm text-gray-500 uppercase tracking-widest mt-2">
+                    The Audacious Founder
+                  </p>
+                </motion.div>
+              </div>
             </div>
           </div>
         </div>
@@ -251,40 +378,6 @@ const About = () => {
               title="Excellence"
               desc="We don't just use tools; we master them. Quality is non-negotiable, and we sweat the details others ignore."
             />
-          </div>
-        </div>
-      </section>
-
-      {/* Team Section */}
-      <section className="py-32 relative overflow-hidden">
-        <div className="container mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8"
-          >
-            <div>
-              <h2 className="text-5xl md:text-7xl font-bold mb-4">The Minds</h2>
-              <p className="text-gray-400 text-xl">Behind the machines.</p>
-            </div>
-            <div className="h-px bg-white/10 flex-grow ml-12 hidden md:block" />
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
-            <TeamMember
-              name="Stella Soribe"
-              role="Founder & Creative Director"
-              img="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1976&auto=format&fit=crop" // Placeholder
-              delay={0.1}
-            />
-            <TeamMember
-              name="Efe Edjowha"
-              role="Co-Founder & Head of Ops"
-              img="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=1975&auto=format&fit=crop" // Placeholder
-              delay={0.2}
-            />
-            {/* Add more members as needed */}
           </div>
         </div>
       </section>
