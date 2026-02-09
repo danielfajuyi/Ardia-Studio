@@ -10,6 +10,7 @@ import {
   Send,
   CheckCircle2,
 } from "lucide-react";
+import ArdiaAcademy from "../../components/sections/ArdiaAcademy";
 
 /**
  * Animated "Connect" 3D Card
@@ -38,8 +39,8 @@ const ConnectCard = () => {
     >
       {/* Abstract Background Shapes */}
       <div className="absolute inset-0 bg-grid-pattern opacity-10" />
-      <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full blur-[80px] group-hover:bg-primary/30 transition-colors duration-500" />
-      <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/20 rounded-full blur-[80px] group-hover:bg-purple-500/30 transition-colors duration-500" />
+      <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-[80px] group-hover:bg-white/20 transition-colors duration-500" />
+      <div className="absolute bottom-0 left-0 w-64 h-64 bg-zinc-800/50 rounded-full blur-[80px] group-hover:bg-zinc-700/50 transition-colors duration-500" />
 
       {/* Floating Content */}
       <motion.div
@@ -90,12 +91,12 @@ const Contact = () => {
             </span>
           </div>
 
-          <h1 className="text-6xl md:text-8xl font-bold tracking-tighter mb-8 leading-tight">
+          <h2 className="text-9xl md:text-8xl font-bold text-white leading-tight mb-6">
             Get in <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-400">
-              Touch.
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-400 to-white">
+              Touch
             </span>
-          </h1>
+          </h2>
           <p className="text-xl text-gray-400">
             Ready to start your next project? We're here to help you bring your
             vision to life.
@@ -128,19 +129,19 @@ const Contact = () => {
 
               <div className="flex items-start gap-6 group">
                 <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center group-hover:bg-primary/20 group-hover:text-primary transition-all duration-300">
-                  <MapPin size={24} />
+                  <Phone size={24} />
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-white mb-1">
-                    Visit Us
+                    Phone Number
                   </h3>
-                  <p className="text-gray-400 mb-2">
-                    Come say hello at our HQ.
-                  </p>
-                  <p className="text-white font-medium">
-                    123 Innovation Drive, <br />
-                    Tech City, Lagos, Nigeria.
-                  </p>
+                  <p className="text-gray-400 mb-2">Mon-Fri from 8am to 5pm.</p>
+                  <a
+                    href="tel:+2348000000000"
+                    className="text-white hover:text-primary transition-colors font-medium"
+                  >
+                    +234 800 000 0000
+                  </a>
                 </div>
               </div>
             </div>
@@ -155,7 +156,7 @@ const Contact = () => {
             transition={{ delay: 0.2, duration: 0.8 }}
             className="bg-zinc-900/50 border border-white/10 rounded-3xl p-8 md:p-12 relative overflow-hidden backdrop-blur-xl"
           >
-            <div className="absolute top-0 right-0 w-full h-2 bg-gradient-to-r from-primary via-purple-500 to-pink-500" />
+            <div className="absolute top-0 right-0 w-full h-2 bg-gradient-to-r from-gray-400 to-white" />
 
             {formState === "success" ? (
               <motion.div
@@ -235,14 +236,14 @@ const Contact = () => {
 
                 <Button
                   variant="primary"
-                  className="w-full py-4 text-lg flex items-center justify-center gap-2 group"
+                  className="w-full py-4 text-lg flex items-center justify-center gap-2 group flex-row"
                   disabled={formState === "submitting"}
                 >
                   {formState === "submitting" ? (
                     "Sending..."
                   ) : (
                     <>
-                      Send Message{" "}
+                      <span> Send Message</span>
                       <Send
                         size={18}
                         className="group-hover:translate-x-1 transition-transform"
@@ -255,6 +256,8 @@ const Contact = () => {
           </motion.div>
         </div>
       </div>
+
+      <ArdiaAcademy />
 
       <Footer />
     </main>
