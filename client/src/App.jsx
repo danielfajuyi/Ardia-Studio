@@ -6,6 +6,8 @@ import {
 } from "react-router-dom";
 import MainLayout from "./components/layouts/MainLayout";
 import Home from "./pages/Agency/Home";
+import About from "./pages/Agency/About";
+import Contact from "./pages/Agency/Contact";
 import AcademyHome from "./pages/Academy/AcademyHome";
 import StudentDashboard from "./pages/Academy/StudentDashboard";
 import AdminDashboard from "./pages/Academy/AdminDashboard";
@@ -50,6 +52,8 @@ function App() {
         <Routes>
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
           </Route>
 
           <Route path="/login" element={<Login />} />

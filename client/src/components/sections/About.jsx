@@ -1,4 +1,6 @@
 import { useRef } from "react";
+import { Link } from "react-router-dom";
+import Button from "../ui/Button";
 import {
   motion,
   useScroll,
@@ -114,13 +116,17 @@ const About = () => {
                 , embarked on a months-long journey of experimentation and
                 learning.
               </p>
-              <p className="text-lg text-gray-300 leading-relaxed mt-4">
+              <p className="text-lg text-gray-300 leading-relaxed mt-4 mb-8">
                 What began as a personal quest to master AI video production
                 quickly evolved into a movement. Together with co-founder{" "}
                 <span className="text-white font-semibold">Efe Edjowha</span>,
                 Stella founded Ardai Studios—one of Africa’s first AI-driven
                 production agencies.
               </p>
+
+              <Link to="/about">
+                <Button variant="primary">Read Our Full Story</Button>
+              </Link>
             </motion.div>
           </div>
 

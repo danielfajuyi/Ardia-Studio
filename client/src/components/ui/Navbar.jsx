@@ -19,8 +19,10 @@ const Navbar = () => {
 
   const navLinks = [
     { name: "Agency", path: "/" },
+    { name: "About", path: "/about" },
+    { name: "Contact", path: "/contact" },
     { name: "Academy", path: "/academy" },
-    { name: "Our Works", path: "/utils" }, // placeholder
+    { name: "Our Works", path: "/#works" }, // Updated to anchor to home
     { name: "Pricing", path: "/pricing" },
   ];
 
