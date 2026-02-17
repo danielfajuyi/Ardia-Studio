@@ -7,6 +7,7 @@ import {
 import MainLayout from "./components/layouts/MainLayout";
 import Home from "./pages/Agency/Home";
 import About from "./pages/Agency/About";
+import Works from "./pages/Agency/Works";
 import Contact from "./pages/Agency/Contact";
 import AcademyHome from "./pages/Academy/AcademyHome";
 import StudentDashboard from "./pages/Academy/StudentDashboard";
@@ -53,6 +54,7 @@ function App() {
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Home />} />
             <Route path="/about" element={<About />} />
+            <Route path="/works" element={<Works />} />
             <Route path="/contact" element={<Contact />} />
           </Route>
 
