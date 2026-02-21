@@ -19,6 +19,7 @@ import {
   RotateCw,
   Maximize,
   ArrowDown,
+  X,
 } from "lucide-react";
 
 // --- Data Structure ---
@@ -97,13 +98,14 @@ const worksData = [
         title: "Ikigai",
         src: "/asset/video/ai-social-media-videos/Ikigai.mp4",
       },
+
+      {
+        title: "Ralph Lauren",
+        src: "/asset/video/ai-social-media-videos/Ralph Lauren.webm",
+      },
       {
         title: "Asake Oge",
         src: "/asset/video/ai-social-media-videos/asakeOge.mp4",
-      },
-      {
-        title: "Ralph Lauren",
-        src: "/asset/video/ai-social-media-videos/Ralph Lauren_.mp4",
       },
       {
         title: "Retrofit",
@@ -111,11 +113,11 @@ const worksData = [
       },
       {
         title: "Model 1",
-        src: "/asset/video/ai-social-media-videos/Model 1.mp4",
+        src: "/asset/video/ai-social-media-videos/Model 1.webm",
       },
       {
         title: "Model 2",
-        src: "/asset/video/ai-social-media-videos/model 2.mp4",
+        src: "/asset/video/ai-social-media-videos/Model 2.webm",
       },
     ],
   },
@@ -134,7 +136,7 @@ const worksData = [
   },
   {
     category: "AI Tutorials",
-    videos: [{ title: "GRWM", src: "/asset/video/ai-tutorials/GRWM_.mp4" }],
+    videos: [{ title: "GRWM", src: "/asset/video/ai-tutorials/GRWM.webm" }],
   },
 ];
 
@@ -153,7 +155,7 @@ const WorksHero = () => {
   return (
     <section
       ref={ref}
-      className="relative h-[70vh] flex items-center justify-center overflow-hidden bg-black perspective-1000"
+      className="relative h-[70vh] flex items-center justify-center overflow-hidden bg-black perspective-1000 mb-12 lg:mb-24"
     >
       <motion.div style={{ y, opacity }} className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-b from-purple-900/20 via-black to-black" />
@@ -187,7 +189,9 @@ const WorksHero = () => {
   );
 };
 
-const VideoCard = ({ video }) => {
+// --- Modals & Subcomponents ---
+
+const VideoCard = ({ video, onClick }) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
@@ -203,19 +207,105 @@ const VideoCard = ({ video }) => {
   const rotateX = useTransform(mouseY, [-300, 300], [5, -5]);
   const rotateY = useTransform(mouseX, [-300, 300], [-5, 5]);
 
-  // Video State
+  const [aspectType, setAspectType] = useState("landscape"); // default assumption
+
+  const handleLoadedMetadata = (e) => {
+    const { videoWidth, videoHeight } = e.target;
+    if (videoHeight > videoWidth) {
+      setAspectType("portrait");
+    } else {
+      setAspectType("landscape");
+    }
+  };
+
+  return (
+    <motion.div
+      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+      onMouseMove={handleMouseMove}
+      onClick={() => onClick(video)}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.5 }}
+      className={`relative w-full rounded-2xl md:rounded-3xl overflow-hidden bg-zinc-900 border border-white/10 group perspective-1000 cursor-pointer shadow-lg hover:shadow-2xl hover:shadow-primary/10 transition-shadow ${
+        aspectType === "portrait"
+          ? "aspect-[4/5] max-h-[600px]"
+          : "aspect-video"
+      }`}
+    >
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10 transition-opacity duration-500 opacity-80 group-hover:opacity-40" />
+
+      <video
+        src={video.src}
+        className="w-full h-full object-cover"
+        muted
+        playsInline
+        onLoadedMetadata={handleLoadedMetadata}
+      />
+
+      <div className="absolute inset-0 flex items-center justify-center z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <div className="w-16 h-16 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 shadow-2xl scale-90 group-hover:scale-100 transition-transform duration-300">
+          <Play className="w-6 h-6 text-white fill-white ml-1" />
+        </div>
+      </div>
+
+      <motion.div className="absolute top-4 left-4 z-20 pointer-events-none">
+        <div className="px-4 py-2 bg-black/40 backdrop-blur-md border border-white/10 rounded-full">
+          <span className="text-white font-medium text-sm">{video.title}</span>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+};
+
+const VideoModal = ({ video, onClose }) => {
   const videoRef = useRef(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(true); // Start muted like FeaturedVideo? Or unmuted? Featured is often muted autoplay. User said "all video features".
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [isMuted, setIsMuted] = useState(false);
   const [progress, setProgress] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [showControls, setShowControls] = useState(true);
+  const controlsTimeout = useRef(null);
 
-  const formatTime = (timeInSeconds) => {
-    const minutes = Math.floor(timeInSeconds / 60);
-    const seconds = Math.floor(timeInSeconds % 60);
-    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
-  };
+  // Auto-hide controls when playing
+  useEffect(() => {
+    const bumpControls = () => {
+      setShowControls(true);
+      if (controlsTimeout.current) clearTimeout(controlsTimeout.current);
+      if (isPlaying) {
+        controlsTimeout.current = setTimeout(
+          () => setShowControls(false),
+          2500,
+        );
+      }
+    };
+
+    bumpControls();
+    window.addEventListener("mousemove", bumpControls);
+    return () => {
+      window.removeEventListener("mousemove", bumpControls);
+      if (controlsTimeout.current) clearTimeout(controlsTimeout.current);
+    };
+  }, [isPlaying]);
+
+  useEffect(() => {
+    // Escape to close
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [onClose]);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.play().catch((err) => {
+        console.warn("Autoplay blocked:", err);
+        setIsPlaying(false);
+      });
+    }
+  }, [video]);
 
   const togglePlay = (e) => {
     e.stopPropagation();
@@ -238,6 +328,18 @@ const VideoCard = ({ video }) => {
     }
   };
 
+  const toggleFullscreen = (e) => {
+    e.stopPropagation();
+    if (!videoRef.current) return;
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    } else {
+      if (videoRef.current.requestFullscreen) {
+        videoRef.current.requestFullscreen();
+      }
+    }
+  };
+
   const handleSeek = (e, seconds) => {
     e.stopPropagation();
     if (videoRef.current) {
@@ -250,12 +352,10 @@ const VideoCard = ({ video }) => {
 
   const handleTimeUpdate = () => {
     if (videoRef.current) {
-      const current = videoRef.current.currentTime;
-      const total = videoRef.current.duration;
-      setCurrentTime(current);
-      if (total > 0) {
-        setProgress((current / total) * 100);
-      }
+      setCurrentTime(videoRef.current.currentTime);
+      setProgress(
+        (videoRef.current.currentTime / videoRef.current.duration) * 100,
+      );
     }
   };
 
@@ -265,113 +365,143 @@ const VideoCard = ({ video }) => {
     }
   };
 
-  const handleVideoEnded = () => {
-    setIsPlaying(false);
-    if (videoRef.current) videoRef.current.currentTime = 0;
+  const formatTime = (timeInSeconds) => {
+    if (isNaN(timeInSeconds)) return "0:00";
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = Math.floor(timeInSeconds % 60);
+    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
   };
 
   return (
     <motion.div
-      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-      onMouseMove={handleMouseMove}
-      onClick={togglePlay}
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.5 }}
-      className="relative w-full aspect-video rounded-3xl overflow-hidden bg-zinc-900 border border-white/10 group perspective-1000 cursor-pointer shadow-lg hover:shadow-2xl hover:shadow-primary/10 transition-shadow"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-2xl p-4 md:p-12"
+      onClick={onClose}
     >
-      <div
-        className={`absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10 transition-opacity duration-500 ${isPlaying ? "opacity-40" : "opacity-80"}`}
-      />
-
-      <video
-        ref={videoRef}
-        src={video.src}
-        className="w-full h-full object-cover"
-        muted={isMuted} // Start muted? User didn't specify, but safer for autoplay or initial click.
-        playsInline
-        onTimeUpdate={handleTimeUpdate}
-        onLoadedMetadata={handleLoadedMetadata}
-        onEnded={handleVideoEnded}
-      />
-
-      {/* Play Button Overlay (Visible when paused) */}
-      <AnimatePresence>
-        {!isPlaying && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            className="absolute inset-0 flex items-center justify-center z-30"
-          >
-            <div className="w-16 h-16 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 shadow-2xl group-hover:scale-110 transition-transform duration-300">
-              <Play className="w-6 h-6 text-white fill-white ml-1" />
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Controls Overlay (Visible when playing) */}
-      <AnimatePresence>
-        {isPlaying && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            className="absolute bottom-4 left-4 right-4 z-40 flex items-center justify-between gap-2"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              onClick={togglePlay}
-              className="p-2 bg-black/60 rounded-full hover:bg-black/80 transition-colors"
-            >
-              <Pause className="w-4 h-4 text-white fill-white" />
-            </button>
-
-            <div className="flex-1 bg-black/60 backdrop-blur-md rounded-full px-4 py-2 flex items-center gap-3">
-              <span className="text-[10px] font-mono text-white/80 w-8 text-right">
-                {formatTime(currentTime)}
-              </span>
-              <div className="flex-1 h-1 bg-white/20 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-white rounded-full transition-all duration-100 ease-linear"
-                  style={{ width: `${progress}%` }}
-                />
-              </div>
-              <span className="text-[10px] font-mono text-white/80 w-8">
-                {formatTime(duration)}
-              </span>
-            </div>
-
-            <button
-              onClick={toggleMute}
-              className="p-2 bg-black/60 rounded-full hover:bg-black/80 transition-colors"
-            >
-              {isMuted ? (
-                <VolumeX className="w-4 h-4 text-white" />
-              ) : (
-                <Volume2 className="w-4 h-4 text-white" />
-              )}
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Title Badge (Visible always, maybe fade out on play if preferred, keeping visible for context) */}
-      <motion.div
-        className="absolute top-4 left-4 z-20"
-        animate={{ opacity: isPlaying ? 0 : 1 }}
+      <button
+        onClick={onClose}
+        className="absolute top-6 right-6 lg:top-10 lg:right-10 z-[101] p-4 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-md transition-all group"
       >
-        <div className="px-4 py-2 bg-black/40 backdrop-blur-md border border-white/10 rounded-full">
-          <span className="text-white font-medium text-sm">{video.title}</span>
-        </div>
+        <X className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
+      </button>
+
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.95, y: 20 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+        className="relative w-full max-w-7xl max-h-[85vh] md:max-h-[90vh] bg-black rounded-xl md:rounded-3xl overflow-hidden shadow-2xl border border-white/10 flex items-center justify-center group"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <video
+          ref={videoRef}
+          src={video.src}
+          className="w-full h-full max-h-[85vh] md:max-h-[90vh] object-contain bg-black cursor-pointer"
+          muted={isMuted}
+          playsInline
+          onClick={togglePlay}
+          onTimeUpdate={handleTimeUpdate}
+          onLoadedMetadata={handleLoadedMetadata}
+          onEnded={() => setIsPlaying(false)}
+        />
+
+        {/* Apple-Sleek Cinematic Controls Overlay */}
+        <AnimatePresence>
+          {showControls && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.3 }}
+              className="absolute bottom-6 md:bottom-10 left-6 right-6 md:left-12 md:right-12 flex flex-col gap-4 pointer-events-none z-50"
+            >
+              {/* Title & Scrub Bar */}
+              <div className="flex flex-col gap-3 pointer-events-auto w-full max-w-3xl mx-auto">
+                <div className="flex items-center justify-between text-white/90 text-sm px-2 font-medium drop-shadow-md">
+                  <span>{video.title}</span>
+                  <span className="font-mono text-xs opacity-70">
+                    {formatTime(currentTime)} / {formatTime(duration)}
+                  </span>
+                </div>
+
+                <div
+                  className="h-1.5 md:h-2 bg-white/20 rounded-full overflow-hidden cursor-pointer group/progress relative"
+                  onClick={(e) => {
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    const percent = (e.clientX - rect.left) / rect.width;
+                    if (videoRef.current)
+                      videoRef.current.currentTime = percent * duration;
+                  }}
+                >
+                  <motion.div
+                    className="h-full bg-white rounded-full group-hover/progress:bg-blue-400 transition-colors"
+                    style={{ width: `${progress}%` }}
+                  />
+                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover/progress:opacity-100 transition-opacity" />
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex items-center justify-center gap-6 mt-2 pointer-events-auto">
+                <button
+                  onClick={(e) => handleSeek(e, -10)}
+                  className="p-3 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md border border-white/10 text-white/80 hover:text-white transition-all transform hover:scale-110"
+                >
+                  <RotateCcw className="w-5 h-5" />
+                </button>
+
+                <button
+                  onClick={togglePlay}
+                  className="p-5 rounded-full bg-white text-black hover:scale-110 hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] transition-all flex items-center justify-center transform active:scale-95"
+                >
+                  {isPlaying ? (
+                    <Pause className="w-7 h-7 fill-black" />
+                  ) : (
+                    <Play className="w-7 h-7 fill-black ml-1" />
+                  )}
+                </button>
+
+                <button
+                  onClick={(e) => handleSeek(e, 10)}
+                  className="p-3 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md border border-white/10 text-white/80 hover:text-white transition-all transform hover:scale-110"
+                >
+                  <RotateCw className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Secondary Actions (Mute/Full) */}
+              <div className="absolute right-0 bottom-0 pointer-events-auto flex gap-3">
+                <button
+                  onClick={toggleMute}
+                  className="p-3 bg-black/40 hover:bg-black/60 backdrop-blur-md border border-white/10 rounded-full transition-transform hover:scale-110"
+                >
+                  {isMuted ? (
+                    <VolumeX className="w-5 h-5 text-white" />
+                  ) : (
+                    <Volume2 className="w-5 h-5 text-white" />
+                  )}
+                </button>
+                <button
+                  onClick={toggleFullscreen}
+                  className="p-3 bg-black/40 hover:bg-black/60 backdrop-blur-md border border-white/10 rounded-full transition-transform hover:scale-110 md:hidden"
+                >
+                  <Maximize className="w-5 h-5 text-white" />
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.div>
     </motion.div>
   );
 };
 
 const Works = () => {
+  const [activeVideo, setActiveVideo] = useState(null);
+
   return (
     <main className="bg-black min-h-screen text-white">
       <Navbar />
@@ -394,7 +524,11 @@ const Works = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {section.videos.map((video, vIndex) => (
-                <VideoCard key={vIndex} video={video} />
+                <VideoCard
+                  key={`${index}-${vIndex}`}
+                  video={video}
+                  onClick={setActiveVideo}
+                />
               ))}
             </div>
           </section>
@@ -403,6 +537,15 @@ const Works = () => {
 
       <FinalCTA />
       <Footer />
+
+      <AnimatePresence>
+        {activeVideo && (
+          <VideoModal
+            video={activeVideo}
+            onClose={() => setActiveVideo(null)}
+          />
+        )}
+      </AnimatePresence>
     </main>
   );
 };
