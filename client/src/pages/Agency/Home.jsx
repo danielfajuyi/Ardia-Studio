@@ -12,7 +12,7 @@ import Works from "../../components/sections/Works";
 
 import Footer from "../../components/ui/Footer";
 import ScrollDripLine from "../../components/ui/ScrollDripLine";
-import FAQ from "../../components/sections/FAQ";
+import FAQ from "../../components/sections/FaQ";
 
 const Home = () => {
   return (
