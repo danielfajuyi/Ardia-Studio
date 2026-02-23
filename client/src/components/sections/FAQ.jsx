@@ -57,7 +57,7 @@ const AccordionItem = ({ item, isOpen, onClick }) => {
         </div>
 
         <div
-          className={`relative flex items-center justify-center w-10 h-10 rounded-full border transition-all duration-300 ${isOpen ? "border-primary bg-primary text-black rotate-180" : "border-white/20 text-white group-hover:border-white"}`}
+          className={`shrink-0 relative flex items-center justify-center w-10 h-10 rounded-full border transition-all duration-300 ${isOpen ? "border-primary bg-primary text-black rotate-180" : "border-white/20 text-white group-hover:border-white"}`}
         >
           {isOpen ? <Minus size={20} /> : <Plus size={20} />}
         </div>
@@ -71,7 +71,7 @@ const AccordionItem = ({ item, isOpen, onClick }) => {
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
           >
-            <div className="px-8 pb-8 pt-0 pl-[4.5rem]">
+            <div className="px-6 md:px-8 pb-6 md:pb-8 pt-0 pl-6 md:pl-[4.5rem]">
               <p className="text-gray-400 text-lg leading-relaxed max-w-2xl">
                 {item.answer}
               </p>

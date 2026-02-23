@@ -174,7 +174,7 @@ const WorksHero = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
         >
-          <h1 className="text-6xl md:text-9xl font-bold tracking-tighter mb-6 text-white">
+          <h1 className="text-5xl md:text-8xl font-bold tracking-tighter mb-6 text-white">
             Selected
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-400 to-white block md:inline-block md:ml-6">
               Works.
@@ -417,13 +417,13 @@ const VideoModal = ({ video, onClose }) => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 20 }}
               transition={{ duration: 0.3 }}
-              className="absolute bottom-6 md:bottom-10 left-6 right-6 md:left-12 md:right-12 flex flex-col gap-4 pointer-events-none z-50"
+              className="absolute bottom-4 md:bottom-10 left-4 right-4 md:left-12 md:right-12 flex flex-col gap-3 md:gap-4 pointer-events-none z-50"
             >
               {/* Title & Scrub Bar */}
-              <div className="flex flex-col gap-3 pointer-events-auto w-full max-w-3xl mx-auto">
-                <div className="flex items-center justify-between text-white/90 text-sm px-2 font-medium drop-shadow-md">
-                  <span>{video.title}</span>
-                  <span className="font-mono text-xs opacity-70">
+              <div className="flex flex-col gap-2 md:gap-3 pointer-events-auto w-full max-w-3xl mx-auto">
+                <div className="flex items-center justify-between text-white/90 text-[10px] md:text-sm px-2 font-medium drop-shadow-md">
+                  <span className="truncate pr-2">{video.title}</span>
+                  <span className="font-mono text-[10px] md:text-xs opacity-70 shrink-0">
                     {formatTime(currentTime)} / {formatTime(duration)}
                   </span>
                 </div>
@@ -446,50 +446,50 @@ const VideoModal = ({ video, onClose }) => {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex items-center justify-center gap-6 mt-2 pointer-events-auto">
+              <div className="flex items-center justify-center gap-4 md:gap-6 mt-1 md:mt-2 pointer-events-auto">
                 <button
                   onClick={(e) => handleSeek(e, -10)}
-                  className="p-3 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md border border-white/10 text-white/80 hover:text-white transition-all transform hover:scale-110"
+                  className="p-2.5 md:p-3 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md border border-white/10 text-white/80 hover:text-white transition-all transform hover:scale-110"
                 >
-                  <RotateCcw className="w-5 h-5" />
+                  <RotateCcw className="w-4 h-4 md:w-5 md:h-5" />
                 </button>
 
                 <button
                   onClick={togglePlay}
-                  className="p-5 rounded-full bg-white text-black hover:scale-110 hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] transition-all flex items-center justify-center transform active:scale-95"
+                  className="p-4 md:p-5 rounded-full bg-white text-black hover:scale-110 hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] transition-all flex items-center justify-center transform active:scale-95"
                 >
                   {isPlaying ? (
-                    <Pause className="w-7 h-7 fill-black" />
+                    <Pause className="w-5 h-5 md:w-7 md:h-7 fill-black" />
                   ) : (
-                    <Play className="w-7 h-7 fill-black ml-1" />
+                    <Play className="w-5 h-5 md:w-7 md:h-7 fill-black ml-1" />
                   )}
                 </button>
 
                 <button
                   onClick={(e) => handleSeek(e, 10)}
-                  className="p-3 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md border border-white/10 text-white/80 hover:text-white transition-all transform hover:scale-110"
+                  className="p-2.5 md:p-3 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md border border-white/10 text-white/80 hover:text-white transition-all transform hover:scale-110"
                 >
-                  <RotateCw className="w-5 h-5" />
+                  <RotateCw className="w-4 h-4 md:w-5 md:h-5" />
                 </button>
               </div>
 
               {/* Secondary Actions (Mute/Full) */}
-              <div className="absolute right-0 bottom-0 pointer-events-auto flex gap-3">
+              <div className="absolute right-0 md:right-4 bottom-2 md:bottom-0 pointer-events-auto flex gap-2 md:gap-3 opacity-80 md:opacity-100">
                 <button
                   onClick={toggleMute}
-                  className="p-3 bg-black/40 hover:bg-black/60 backdrop-blur-md border border-white/10 rounded-full transition-transform hover:scale-110"
+                  className="p-2 md:p-3 bg-black/40 hover:bg-black/60 backdrop-blur-md border border-white/10 rounded-full transition-transform hover:scale-110"
                 >
                   {isMuted ? (
-                    <VolumeX className="w-5 h-5 text-white" />
+                    <VolumeX className="w-4 h-4 md:w-5 md:h-5 text-white" />
                   ) : (
-                    <Volume2 className="w-5 h-5 text-white" />
+                    <Volume2 className="w-4 h-4 md:w-5 md:h-5 text-white" />
                   )}
                 </button>
                 <button
                   onClick={toggleFullscreen}
-                  className="p-3 bg-black/40 hover:bg-black/60 backdrop-blur-md border border-white/10 rounded-full transition-transform hover:scale-110 md:hidden"
+                  className="p-2 md:p-3 bg-black/40 hover:bg-black/60 backdrop-blur-md border border-white/10 rounded-full transition-transform hover:scale-110 md:hidden"
                 >
-                  <Maximize className="w-5 h-5 text-white" />
+                  <Maximize className="w-4 h-4 md:w-5 md:h-5 text-white" />
                 </button>
               </div>
             </motion.div>

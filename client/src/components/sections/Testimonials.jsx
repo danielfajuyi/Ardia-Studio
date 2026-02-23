@@ -128,7 +128,7 @@ const Testimonials = () => {
                     duration: 0.8,
                     ease: [0.32, 0.72, 0, 1],
                   }}
-                  className="absolute p-8 md:p-12 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl shadow-2xl flex flex-col items-center text-center max-w-2xl w-full mx-4"
+                  className="absolute p-6 md:p-12 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl shadow-2xl flex flex-col items-center text-center max-w-2xl w-[85vw] md:w-full md:mx-4"
                   style={{ transformOrigin: "center center" }}
                 >
                   <Quote className="w-12 h-12 text-primary/50 mb-6" />

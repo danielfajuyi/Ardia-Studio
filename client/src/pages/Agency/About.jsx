@@ -437,7 +437,7 @@ const AboutHero = () => {
             </div>
           </motion.div>
 
-          <h1 className="text-6xl md:text-9xl font-bold tracking-tighter mb-8 leading-[0.85] perspective-500">
+          <h1 className="text-5xl md:text-7xl lg:text-9xl font-bold tracking-tighter mb-8 leading-[0.85] perspective-500">
             <div className="overflow-hidden">
               <motion.div
                 initial={{ y: "100%" }}
@@ -524,7 +524,7 @@ const About = () => {
             <div className="lg:w-1/2 space-y-12 order-1 lg:order-2">
               <AnimatedText
                 text="About Ardai Studios"
-                className="text-5xl md:text-7xl font-bold leading-tight mb-8"
+                className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight mb-8"
               />
 
               <div className="space-y-8 text-lg text-gray-300 leading-relaxed font-light">
