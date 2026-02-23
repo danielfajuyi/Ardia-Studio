@@ -20,6 +20,8 @@ import {
   Maximize,
 } from "lucide-react";
 import ArdiaAcademy from "../../components/sections/ArdiaAcademy";
+import CloudinaryImage from "../../components/ui/CloudinaryImage";
+import CloudinaryVideo from "../../components/ui/CloudinaryVideo";
 
 /**
  * Reusable animated text component
@@ -133,7 +135,7 @@ const OriginImage = () => {
     >
       <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10 opacity-60" />
 
-      <motion.img
+      <CloudinaryImage
         src="/asset/Picture1.jpgsDCAfcds.jpg"
         alt="Ardai Studios Vision"
         style={{ transform: "translateZ(20px) scale(1.1)" }}
@@ -259,11 +261,11 @@ const OriginVideo = () => {
     >
       <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10 opacity-60 pointer-events-none" />
 
-      <video
+      <CloudinaryVideo
         ref={videoRef}
         src="/asset/Ikigai.mp4"
         className="w-full h-full object-cover"
-        muted={isMuted} // Controlled by state
+        muted={isMuted}
         playsInline
         onTimeUpdate={handleTimeUpdate}
         onLoadedMetadata={handleLoadedMetadata}

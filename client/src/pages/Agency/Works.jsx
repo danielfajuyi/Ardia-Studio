@@ -21,6 +21,7 @@ import {
   ArrowDown,
   X,
 } from "lucide-react";
+import CloudinaryVideo from "../../components/ui/CloudinaryVideo";
 
 // --- Data Structure ---
 const worksData = [
@@ -235,7 +236,7 @@ const VideoCard = ({ video, onClick }) => {
     >
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10 transition-opacity duration-500 opacity-80 group-hover:opacity-40" />
 
-      <video
+      <CloudinaryVideo
         src={video.src}
         className="w-full h-full object-cover"
         muted
@@ -396,7 +397,7 @@ const VideoModal = ({ video, onClose }) => {
         className="relative w-full max-w-7xl max-h-[85vh] md:max-h-[90vh] bg-black rounded-xl md:rounded-3xl overflow-hidden shadow-2xl border border-white/10 flex items-center justify-center group"
         onClick={(e) => e.stopPropagation()}
       >
-        <video
+        <CloudinaryVideo
           ref={videoRef}
           src={video.src}
           className="w-full h-full max-h-[85vh] md:max-h-[90vh] object-contain bg-black cursor-pointer"

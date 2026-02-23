@@ -11,6 +11,7 @@ import {
   Maximize,
   Minimize,
 } from "lucide-react";
+import CloudinaryVideo from "../ui/CloudinaryVideo";
 
 const highlights = [
   {
@@ -309,7 +310,7 @@ const FeaturedVideo = () => {
                   }
                 }}
               >
-                <video
+                <CloudinaryVideo
                   ref={(el) => (videoRefs.current[index] = el)}
                   playsInline
                   className="w-full h-full object-cover"
@@ -318,9 +319,8 @@ const FeaturedVideo = () => {
                   onPause={handleVideoPause}
                   onTimeUpdate={handleTimeUpdate}
                   onLoadedMetadata={handleLoadedMetadata}
-                >
-                  <source src={item.video} type="video/mp4" />
-                </video>
+                  src={item.video}
+                />
 
                 {/* Dark Overlay & Big Play Button - Only if NOT playing active slide */}
                 <motion.div

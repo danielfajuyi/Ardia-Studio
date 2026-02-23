@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import React, { useRef } from "react";
 import { ArrowUpRight, Play, Pause } from "lucide-react";
 import Button from "../ui/Button";
+import CloudinaryVideo from "../ui/CloudinaryVideo";
 
 const projects = [
   {
@@ -70,7 +71,7 @@ const ProjectCard = ({ project }) => {
     >
       {/* Video Overlay */}
       <div className="absolute inset-0 z-0">
-        <video
+        <CloudinaryVideo
           ref={videoRef}
           src={project.video}
           className="w-full h-full object-cover transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100 transition-opacity"

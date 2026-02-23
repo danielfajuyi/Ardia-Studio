@@ -6,6 +6,7 @@ import ShinyText from "./ShinyText";
 import ShinyText2 from "./ShinyText2";
 import axios from "axios";
 import ScrollLine from "./Scroll-Line";
+import CloudinaryVideo from "./CloudinaryVideo";
 
 const Hero = () => {
   const containerRef = useRef(null);
@@ -52,16 +53,15 @@ const Hero = () => {
       >
         <div className="absolute inset-0 bg-black/30 z-10" />{" "}
         {/* Overlay for text readability */}
-        <video
+        <CloudinaryVideo
           key={videos[currentVideoIndex]}
           autoPlay
           muted
           playsInline
           onEnded={handleVideoEnded}
           className="w-full h-full object-cover opacity-80"
-        >
-          <source src={videos[currentVideoIndex]} type="video/mp4" />
-        </video>
+          src={videos[currentVideoIndex]}
+        />
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-background to-transparent z-20" />
       </motion.div>
 
