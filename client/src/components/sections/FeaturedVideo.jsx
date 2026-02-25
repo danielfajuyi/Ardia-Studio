@@ -268,9 +268,9 @@ const FeaturedVideo = () => {
       {/* Carousel */}
       <div className="relative w-full h-[60vh] md:h-[80vh] pl-6 md:pl-[max(2rem,calc(50vw-45vw))]">
         <motion.div
-          className="flex gap-6 h-full"
+          className="flex h-full"
           animate={{
-            x: `-${activeTab * (window.innerWidth < 768 ? 92 : 47)}%`,
+            x: `-${activeTab * (window.innerWidth < 768 ? 100 : 47)}%`,
           }}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
         >
@@ -281,7 +281,7 @@ const FeaturedVideo = () => {
             return (
               <motion.div
                 key={item.id}
-                className={`relative min-w-[90vw] md:min-w-[45vw] h-full rounded-3xl overflow-hidden transition-all duration-500 cursor-grab active:cursor-grabbing ${
+                className={`relative min-w-[100vw] md:min-w-[45vw] md:mr-6 h-full rounded-none md:rounded-3xl overflow-hidden transition-all duration-500 cursor-grab active:cursor-grabbing ${
                   isActive
                     ? "opacity-100 scale-105 z-10 border border-white/20 shadow-2xl shadow-blue-500/10"
                     : "opacity-40 scale-90 grayscale-[30%]"
@@ -353,7 +353,7 @@ const FeaturedVideo = () => {
                 <AnimatePresence>
                   {isSlidePlaying && (
                     <motion.div
-                      className="absolute bottom-6 left-6 right-6 flex items-center justify-between gap-4 z-50 pointer-events-auto"
+                      className="absolute bottom-4 left-4 right-4 md:bottom-6 md:left-6 md:right-6 flex flex-wrap md:flex-nowrap items-center justify-between gap-2 md:gap-4 z-50 pointer-events-auto"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 20 }}
@@ -362,22 +362,22 @@ const FeaturedVideo = () => {
                       onClick={(e) => e.stopPropagation()}
                     >
                       {/* Left Pill: Play/Pause */}
-                      <div className="bg-black/60 backdrop-blur-md rounded-full px-4 py-2 flex items-center">
+                      <div className="bg-black/60 backdrop-blur-md rounded-full px-3 py-2 md:px-4 md:py-2 flex items-center">
                         <button
                           onClick={() => togglePlay(index)}
                           className="hover:scale-110 transition-transform"
                         >
-                          <Pause className="w-5 h-5 text-white fill-white" />
+                          <Pause className="w-4 h-4 md:w-5 md:h-5 text-white fill-white" />
                         </button>
                       </div>
 
                       {/* Center Pill: Seek & Time */}
-                      <div className="flex-1 max-w-md bg-black/60 backdrop-blur-md rounded-full px-6 py-2 flex items-center justify-between gap-4">
+                      <div className="flex-1 w-full order-last md:order-none max-w-md bg-black/60 backdrop-blur-md rounded-full px-4 py-2 md:px-6 md:py-2 flex items-center justify-between gap-2 md:gap-4">
                         <button
                           onClick={() => handleSeek(index, -10)}
                           className="hover:text-white text-white/70 transition-colors"
                         >
-                          <RotateCcw className="w-4 h-4" />
+                          <RotateCcw className="w-3 h-3 md:w-4 md:h-4" />
                         </button>
 
                         <div className="flex-1 h-1 bg-white/20 rounded-full overflow-hidden mx-2">
@@ -387,7 +387,7 @@ const FeaturedVideo = () => {
                           />
                         </div>
 
-                        <span className="text-xs font-medium text-white font-mono min-w-[80px] text-center">
+                        <span className="text-[10px] md:text-xs font-medium text-white font-mono min-w-[60px] md:min-w-[80px] text-center">
                           {formatTime(currentTime)} / {formatTime(duration)}
                         </span>
 
@@ -395,24 +395,24 @@ const FeaturedVideo = () => {
                           onClick={() => handleSeek(index, 10)}
                           className="hover:text-white text-white/70 transition-colors"
                         >
-                          <RotateCw className="w-4 h-4" />
+                          <RotateCw className="w-3 h-3 md:w-4 md:h-4" />
                         </button>
                       </div>
 
                       {/* Right Pill: Volume & Options */}
-                      <div className="bg-black/60 backdrop-blur-md rounded-full px-4 py-2 flex items-center gaps-3">
+                      <div className="bg-black/60 backdrop-blur-md rounded-full px-3 py-2 md:px-4 md:py-2 flex items-center gap-2 md:gap-3">
                         <button
                           onClick={(e) => toggleMute(e, index)}
-                          className="hover:scale-110 transition-transform mr-3"
+                          className="hover:scale-110 transition-transform"
                         >
                           {isMuted ? (
-                            <VolumeX className="w-5 h-5 text-white" />
+                            <VolumeX className="w-4 h-4 md:w-5 md:h-5 text-white" />
                           ) : (
-                            <Volume2 className="w-5 h-5 text-white" />
+                            <Volume2 className="w-4 h-4 md:w-5 md:h-5 text-white" />
                           )}
                         </button>
-                        <button className="hover:scale-110 transition-transform">
-                          <Maximize className="w-5 h-5 text-white" />
+                        <button className="hover:scale-110 transition-transform hidden md:block">
+                          <Maximize className="w-4 h-4 md:w-5 md:h-5 text-white" />
                         </button>
                       </div>
                     </motion.div>

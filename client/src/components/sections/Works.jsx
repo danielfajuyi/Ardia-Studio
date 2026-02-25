@@ -56,6 +56,17 @@ const ProjectCard = ({ project }) => {
     }
   };
 
+  const handleClick = (e) => {
+    // Prevent the modal from opening if they are clicking to pause/play
+    // Wait, the ProjectCard itself doesn't have an onClick that opens a modal here...
+    // The "View All Projects" button opens it? Actually there is no modal.
+    if (isPlaying) {
+      handleMouseLeave();
+    } else {
+      handleMouseEnter();
+    }
+  };
+
   const handleTimeUpdate = () => {
     if (videoRef.current && videoRef.current.currentTime >= 5) {
       videoRef.current.currentTime = 0;
@@ -68,6 +79,7 @@ const ProjectCard = ({ project }) => {
       className="group relative w-[350px] aspect-[4/5] rounded-3xl overflow-hidden cursor-pointer shrink-0 mx-4 bg-zinc-900 border border-white/5"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onClick={handleClick}
     >
       {/* Video Overlay */}
       <div className="absolute inset-0 z-0">

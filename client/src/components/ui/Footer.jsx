@@ -124,14 +124,14 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
+        <div className="border-t border-white/10 pt-8 flex flex-col-reverse md:flex-row justify-between items-center gap-6 md:gap-4 text-sm text-gray-500 text-center md:text-left">
           <p>&copy; {currentYear} Ardia Studio. All rights reserved.</p>
-          <div className="flex gap-8">
+          <div className="flex flex-wrap justify-center md:justify-end gap-4 md:gap-8">
             {footerLinks.legal.map((item) => (
               <a
                 key={item}
                 href="#"
-                className="hover:text-white transition-colors"
+                className="hover:text-white transition-colors whitespace-nowrap"
               >
                 {item}
               </a>

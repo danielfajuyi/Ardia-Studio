@@ -101,7 +101,7 @@ const Hero = () => {
             direction="left"
             strokeWidth="1px"
             strokeColor="rgba(255, 255, 255, 0.6)"
-            className="text-9xl md:text-8xl text-center font-bold tracking-tighter mb-2 text-transparent"
+            className="text-6xl md:text-8xl lg:text-[10rem] text-center font-bold tracking-tighter mb-2 text-transparent"
           />
         </div>
 

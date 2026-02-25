@@ -49,15 +49,15 @@ const OurProcess = () => {
 
   return (
     <section className="py-24 bg-zinc-950">
-      <div className="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16">
-        <div className="sticky top-32 h-fit">
+      <div className="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+        <div className="relative lg:sticky top-32 h-fit pb-8 lg:pb-0 z-20 bg-zinc-950/80 backdrop-blur-sm lg:bg-transparent lg:backdrop-blur-none">
           <h4
             id="process-text"
             className="text-primary font-bold tracking-widest uppercase mb-4 text-sm"
           >
             Idea to Execution
           </h4>
-          <h2 className="text-4xl md:text-6xl font-bold text-white mb-8">
+          <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 lg:mb-8">
             Our Process
           </h2>
           <p className="text-gray-400 text-lg max-w-md">
