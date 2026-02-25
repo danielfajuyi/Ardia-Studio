@@ -274,9 +274,9 @@ const FeaturedVideo = () => {
       </div>
 
       {/* Carousel */}
-      <div className="relative w-full h-[60vh] md:h-[80vh] pl-0 md:pl-[max(2rem,calc(50vw-45vw))]">
+      <div className="relative w-full h-[60vh] md:h-[80vh] pl-[5vw] md:pl-[max(2rem,calc(50vw-45vw))] overflow-hidden">
         <motion.div
-          className="flex h-full"
+          className="flex h-full gap-[10vw] md:gap-0"
           animate={{
             x: isMobile
               ? `-${activeTab * 100}vw`
@@ -291,7 +291,7 @@ const FeaturedVideo = () => {
             return (
               <motion.div
                 key={item.id}
-                className={`relative shrink-0 w-[100vw] max-w-[100vw] md:min-w-[45vw] md:w-[45vw] md:max-w-none md:mr-6 h-full rounded-none md:rounded-3xl overflow-hidden transition-all duration-500 cursor-grab active:cursor-grabbing ${
+                className={`relative shrink-0 w-[90vw] max-w-[90vw] md:min-w-[45vw] md:w-[45vw] md:max-w-none md:mr-6 h-full rounded-[2rem] md:rounded-3xl overflow-hidden transition-all duration-500 cursor-grab active:cursor-grabbing ${
                   isActive
                     ? "opacity-100 scale-105 z-10 border border-white/20 shadow-2xl shadow-blue-500/10"
                     : "opacity-40 scale-90 grayscale-[30%]"
