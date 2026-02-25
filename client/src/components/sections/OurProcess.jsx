@@ -49,8 +49,8 @@ const OurProcess = () => {
 
   return (
     <section className="py-24 bg-zinc-950">
-      <div className="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
-        <div className="relative lg:sticky top-32 h-fit pb-8 lg:pb-0 z-20 bg-zinc-950/80 backdrop-blur-sm lg:bg-transparent lg:backdrop-blur-none">
+      <div className="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-16">
+        <div className="relative lg:sticky lg:top-32 h-fit pb-8 lg:pb-0 z-20">
           <h4
             id="process-text"
             className="text-primary font-bold tracking-widest uppercase mb-4 text-sm"
