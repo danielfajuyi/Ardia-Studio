@@ -102,7 +102,7 @@ const Navbar = () => {
                 className="text-lg font-medium text-gray-300 hover:text-purple-400"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Sign In
+                SignIn
               </Link>
               <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)}>
                 <Button variant="glow" className="w-full">
