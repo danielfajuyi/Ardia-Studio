@@ -47,7 +47,7 @@ const FinalCTA = () => {
               </span>
             </div>
 
-            <h2 className="text-5xl md:text-8xl font-bold text-white mb-8 tracking-tighter leading-tight">
+            <h2 id="close-text" className="text-5xl md:text-8xl font-bold text-white mb-8 tracking-tighter leading-tight">
               Ready to Shape <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-300 to-gray-500">
                 The Future?

@@ -33,11 +33,10 @@ const AccordionItem = ({ item, isOpen, onClick }) => {
   return (
     <motion.div
       initial={false}
-      className={`group relative overflow-hidden rounded-2xl border transition-all duration-500 ${
-        isOpen
+      className={`group relative overflow-hidden rounded-2xl border transition-all duration-500 ${isOpen
           ? "bg-white/5 border-primary/50 shadow-[0_0_30px_-5px_theme(colors.primary.500/0.2)]"
           : "bg-white/5 border-white/5 hover:border-white/20 hover:bg-white/10"
-      }`}
+        }`}
     >
       <button
         className="w-full py-8 px-8 flex items-center justify-between text-left focus:outline-none"
@@ -101,7 +100,7 @@ const FAQ = () => {
           viewport={{ once: true }}
           className="text-center mb-20"
         >
-          <h2 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight">
+          <h2 id="faq-text" className="text-5xl md:text-7xl font-bold mb-6 tracking-tight">
             Common{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-400">
               Questions

@@ -80,7 +80,7 @@ const ArdiaAcademy = () => {
                 Ardia Academy
               </motion.div>
 
-              <h2 className="text-5xl md:text-7xl font-bold text-white tracking-tighter leading-[0.9]">
+              <h2 id="academy-text" className="text-5xl md:text-7xl font-bold text-white tracking-tighter leading-[0.9]">
                 Master the <br />
                 <span className="text-primary">Future of Video</span>
               </h2>

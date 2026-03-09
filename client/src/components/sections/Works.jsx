@@ -43,7 +43,7 @@ const ProjectCard = ({ project }) => {
 
   const handleMouseEnter = () => {
     if (videoRef.current) {
-      videoRef.current.play().catch(() => {}); // Ignore play errors
+      videoRef.current.play().catch(() => { }); // Ignore play errors
       setIsPlaying(true);
     }
   };
@@ -70,7 +70,7 @@ const ProjectCard = ({ project }) => {
   const handleTimeUpdate = () => {
     if (videoRef.current && videoRef.current.currentTime >= 5) {
       videoRef.current.currentTime = 0;
-      videoRef.current.play().catch(() => {});
+      videoRef.current.play().catch(() => { });
     }
   };
 
@@ -159,7 +159,7 @@ const Works = () => {
             <span className="text-primary font-bold tracking-widest uppercase text-sm mb-4 block">
               Selected Works
             </span>
-            <h2 className="text-5xl md:text-8xl font-bold tracking-tighter text-white">
+            <h2 id="works-text" className="text-5xl md:text-8xl font-bold tracking-tighter text-white">
               Recent <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-500 to-white">
                 Masterpieces.

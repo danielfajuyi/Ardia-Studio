@@ -79,44 +79,45 @@ const ScrollDripLine = () => {
       });
 
       // 3. Sort by 'scroll' trigger to ensure monotonic increase for Framer Motion
-      // (Though physically they should naturally be in order if the DOM order matches)
       foundStops.sort((a, b) => a.scroll - b.scroll);
+
+      // 4. Force strict monotonicity (Framer Motion requires strictly increasing input ranges)
+      for (let i = 1; i < foundStops.length; i++) {
+        if (foundStops[i].scroll <= foundStops[i - 1].scroll) {
+          foundStops[i].scroll = foundStops[i - 1].scroll + 1;
+        }
+      }
 
       // We need at least 2 points to start rendering lines
       if (foundStops.length >= 2) {
-        setStops(foundStops);
+        setStops([...foundStops]); // Force state update
         setLineHeight(maxY + 1000); // Add buffer
         setIsReady(true);
-        return true;
       }
-
-      return false;
     };
 
-    // Polling Mechanism
-    // Check immediately
-    if (calculatePositions()) return;
+    // Calculate immediately
+    calculatePositions();
 
-    // Retry every 500ms for 5 seconds
-    const interval = setInterval(() => {
-      if (calculatePositions()) {
-        clearInterval(interval);
-      }
-    }, 500);
-
-    const timeout = setTimeout(() => {
-      clearInterval(interval);
-      // If we still haven't found enough points, just give up silently
-      // or keep whatever partial state we might have (but render requires 2)
-    }, 5000);
+    // Use ResizeObserver to recalculate when page layout shifts (e.g. images load)
+    const resizeObserver = new ResizeObserver(() => {
+      calculatePositions();
+    });
+    resizeObserver.observe(document.documentElement);
 
     // Re-calculate on resize
     window.addEventListener("resize", calculatePositions);
 
+    // Optional: continuous polling fallback for the first 3 seconds 
+    // to catch any weird asynchronous paints
+    const interval = setInterval(calculatePositions, 500);
+    const timeout = setTimeout(() => clearInterval(interval), 3000);
+
     return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener("resize", calculatePositions);
       clearInterval(interval);
       clearTimeout(timeout);
-      window.removeEventListener("resize", calculatePositions);
     };
   }, []);
 

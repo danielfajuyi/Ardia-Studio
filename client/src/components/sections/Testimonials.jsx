@@ -98,6 +98,7 @@ const Testimonials = () => {
 
       <div className="container mx-auto px-6 relative z-10 flex flex-col items-center">
         <motion.h4
+          id="trust-text"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
