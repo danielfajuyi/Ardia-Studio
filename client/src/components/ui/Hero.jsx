@@ -7,16 +7,22 @@ import ShinyText2 from "./ShinyText2";
 import axios from "axios";
 import ScrollLine from "./Scroll-Line";
 
-// Correctly import the local video asset
+// Import the local video asset
 import heroVideo from "../assets/ai-hero-video.mp4";
 
 const Hero = () => {
   const containerRef = useRef(null);
+  const videoRef = useRef(null); // Ref to control video speed
   const { scrollY } = useScroll();
   const [content, setContent] = useState({});
   const SERVER_URL = import.meta.env.VITE_SERVER_URL || "http://localhost:5000";
 
   useEffect(() => {
+    // Set video playback speed
+    if (videoRef.current) {
+      videoRef.current.playbackRate = 0.8; // Adjust this value (0.5 to 0.8)
+    }
+
     const fetchContent = async () => {
       try {
         const { data } = await axios.get(`${SERVER_URL}/api/cms`);
@@ -43,8 +49,8 @@ const Hero = () => {
       >
         <div className="absolute inset-0 bg-black/30 z-10" />
 
-        {/* Standard Video Tag for Local Assets */}
         <video
+          ref={videoRef} // Attached the ref here
           autoPlay
           muted
           loop
@@ -66,7 +72,7 @@ const Hero = () => {
           transition={{ duration: 1, ease: "easeOut" }}
           className="mb-6"
         >
-          <p className=" #b5b5b5font-medium tracking-[0.2em] text-sm md:text-base uppercase mb-4">
+          <p className="font-medium tracking-[0.2em] text-sm md:text-base uppercase mb-4 text-[#b5b5b5]">
             {content.hero?.subtitle || "The Future of Visuals"}
           </p>
         </motion.div>
@@ -101,7 +107,7 @@ const Hero = () => {
         </motion.div>
       </div>
 
-      {/* Floating Elements (Apple Style) */}
+      {/* Floating Elements */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
